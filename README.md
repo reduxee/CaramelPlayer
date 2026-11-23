@@ -148,7 +148,11 @@ CaramelPlayer/
 - 音频全部走 AVFoundation 系统框架，无第三方音视频 SDK；
 - UI 全部 SwiftUI，无 WebView / 无移动端移植样式。
 
-## 八、许可证
+## 八、更新日志
+
+版本变更见 [CHANGELOG.md](CHANGELOG.md)。
+
+## 九、许可证
 
 本项目基于 [MIT License](LICENSE) 开源 —— 可自由使用、修改、分发，保留版权声明即可。
 
