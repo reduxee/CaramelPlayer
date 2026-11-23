@@ -1,0 +1,384 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	objectVersion = 56;
+	classes = {
+	};
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A100000000000000000000001 /* CaramelPlayerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000001 /* CaramelPlayerApp.swift */; };
+		A100000000000000000000002 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000002 /* Song.swift */; };
+		A100000000000000000000003 /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000003 /* PlayerManager.swift */; };
+		A100000000000000000000004 /* MediaKeysManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000004 /* MediaKeysManager.swift */; };
+		A100000000000000000000005 /* LyricsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000005 /* LyricsParser.swift */; };
+		A100000000000000000000006 /* LyricsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000006 /* LyricsLoader.swift */; };
+		A100000000000000000000007 /* SongMetadataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000007 /* SongMetadataReader.swift */; };
+		A100000000000000000000008 /* FlacMetadataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000008 /* FlacMetadataParser.swift */; };
+		A100000000000000000000009 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000009 /* AppSettings.swift */; };
+		A10000000000000000000000A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000000A /* ContentView.swift */; };
+		A10000000000000000000000B /* SongListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000000B /* SongListView.swift */; };
+		A10000000000000000000001C /* PlayerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001C /* PlayerDetailView.swift */; };
+		A10000000000000000000000E /* LyricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000000E /* LyricsView.swift */; };
+		A10000000000000000000000F /* PlayerControlsBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000000F /* PlayerControlsBar.swift */; };
+		A100000000000000000000012 /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000012 /* Shortcuts.swift */; };
+		A100000000000000000000013 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000013 /* SettingsView.swift */; };
+		A100000000000000000000014 /* SearchPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000014 /* SearchPageView.swift */; };
+		A100000000000000000000011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000011 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B100000000000000000000001 /* CaramelPlayerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaramelPlayerApp.swift; sourceTree = "<group>"; };
+		B100000000000000000000002 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
+		B100000000000000000000003 /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
+		B100000000000000000000004 /* MediaKeysManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaKeysManager.swift; sourceTree = "<group>"; };
+		B100000000000000000000005 /* LyricsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsParser.swift; sourceTree = "<group>"; };
+		B100000000000000000000006 /* LyricsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLoader.swift; sourceTree = "<group>"; };
+		B100000000000000000000007 /* SongMetadataReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongMetadataReader.swift; sourceTree = "<group>"; };
+		B100000000000000000000008 /* FlacMetadataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlacMetadataParser.swift; sourceTree = "<group>"; };
+		B100000000000000000000009 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		B10000000000000000000000A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B10000000000000000000000B /* SongListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListView.swift; sourceTree = "<group>"; };
+		B10000000000000000000001C /* PlayerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailView.swift; sourceTree = "<group>"; };
+		B10000000000000000000000E /* LyricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsView.swift; sourceTree = "<group>"; };
+		B10000000000000000000000F /* PlayerControlsBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerControlsBar.swift; sourceTree = "<group>"; };
+		B100000000000000000000012 /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
+		B100000000000000000000013 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B100000000000000000000014 /* SearchPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageView.swift; sourceTree = "<group>"; };
+		B100000000000000000000010 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B100000000000000000000011 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C100000000000000000000001 /* CaramelPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaramelPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D100000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E100000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				E100000000000000000000002 /* CaramelPlayer */,
+				E1000000000000000000000A2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E1000000000000000000000A2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C100000000000000000000001 /* CaramelPlayer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E100000000000000000000002 /* CaramelPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000000000000001 /* CaramelPlayerApp.swift */,
+				E100000000000000000000003 /* Models */,
+				E100000000000000000000004 /* Player */,
+				E100000000000000000000005 /* Lyrics */,
+				E100000000000000000000006 /* Metadata */,
+				E100000000000000000000007 /* Persistence */,
+				E1000000000000000000000A1 /* Shortcuts */,
+				E100000000000000000000008 /* Views */,
+				E100000000000000000000009 /* Resources */,
+			);
+			path = CaramelPlayer;
+			sourceTree = "<group>";
+		};
+		E100000000000000000000003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000000000000002 /* Song.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E100000000000000000000004 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000000000000003 /* PlayerManager.swift */,
+				B100000000000000000000004 /* MediaKeysManager.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		E100000000000000000000005 /* Lyrics */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000000000000005 /* LyricsParser.swift */,
+				B100000000000000000000006 /* LyricsLoader.swift */,
+			);
+			path = Lyrics;
+			sourceTree = "<group>";
+		};
+		E100000000000000000000006 /* Metadata */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000000000000007 /* SongMetadataReader.swift */,
+				B100000000000000000000008 /* FlacMetadataParser.swift */,
+			);
+			path = Metadata;
+			sourceTree = "<group>";
+		};
+		E100000000000000000000007 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000000000000009 /* AppSettings.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		E100000000000000000000008 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000000A /* ContentView.swift */,
+				B10000000000000000000000B /* SongListView.swift */,
+				B10000000000000000000001C /* PlayerDetailView.swift */,
+				B10000000000000000000000E /* LyricsView.swift */,
+				B10000000000000000000000F /* PlayerControlsBar.swift */,
+				B100000000000000000000013 /* SettingsView.swift */,
+				B100000000000000000000014 /* SearchPageView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E1000000000000000000000A1 /* Shortcuts */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000000000000012 /* Shortcuts.swift */,
+			);
+			path = Shortcuts;
+			sourceTree = "<group>";
+		};
+		E100000000000000000000009 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000000000000010 /* Info.plist */,
+				B100000000000000000000011 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F100000000000000000000001 /* CaramelPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F200000000000000000000003 /* Build configuration list for PBXNativeTarget "CaramelPlayer" */;
+			buildPhases = (
+				F300000000000000000000001 /* Sources */,
+				D100000000000000000000001 /* Frameworks */,
+				F300000000000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CaramelPlayer;
+			productName = CaramelPlayer;
+			productReference = C100000000000000000000001 /* CaramelPlayer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F400000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = F200000000000000000000001 /* Build configuration list for PBXProject "CaramelPlayer" */;
+			developmentRegion = zh-Hans;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = E100000000000000000000001;
+			productRefGroup = E1000000000000000000000A2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F100000000000000000000001 /* CaramelPlayer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F300000000000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A100000000000000000000011 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F300000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A100000000000000000000001 /* CaramelPlayerApp.swift in Sources */,
+				A100000000000000000000002 /* Song.swift in Sources */,
+				A100000000000000000000003 /* PlayerManager.swift in Sources */,
+				A100000000000000000000004 /* MediaKeysManager.swift in Sources */,
+				A100000000000000000000005 /* LyricsParser.swift in Sources */,
+				A100000000000000000000006 /* LyricsLoader.swift in Sources */,
+				A100000000000000000000007 /* SongMetadataReader.swift in Sources */,
+				A100000000000000000000008 /* FlacMetadataParser.swift in Sources */,
+				A100000000000000000000009 /* AppSettings.swift in Sources */,
+				A10000000000000000000000A /* ContentView.swift in Sources */,
+				A10000000000000000000000B /* SongListView.swift in Sources */,
+				A10000000000000000000001C /* PlayerDetailView.swift in Sources */,
+				A10000000000000000000000E /* LyricsView.swift in Sources */,
+				A10000000000000000000000F /* PlayerControlsBar.swift in Sources */,
+				A100000000000000000000013 /* SettingsView.swift in Sources */,
+				A100000000000000000000014 /* SearchPageView.swift in Sources */,
+				A100000000000000000000012 /* Shortcuts.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F500000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F500000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F500000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = CaramelPlayer/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "焦糖音乐";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.caramel.player";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		F500000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = CaramelPlayer/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "焦糖音乐";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.caramel.player";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F200000000000000000000001 /* Build configuration list for PBXProject "CaramelPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F500000000000000000000001 /* Debug */,
+				F500000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F200000000000000000000003 /* Build configuration list for PBXNativeTarget "CaramelPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F500000000000000000000003 /* Debug */,
+				F500000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F400000000000000000000001 /* Project object */;
+}
