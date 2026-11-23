@@ -62,6 +62,20 @@ final class PlayerManager: ObservableObject {
     @Published var activePage: Int = 0 {
         didSet { persist() }
     }
+
+    /// 展开播放器详情页（从底部滑入 + 轻微弹性）
+    func showPlayerDetail() {
+        withAnimation(.spring(response: 0.42, dampingFraction: 0.86)) {
+            activePage = 1
+        }
+    }
+
+    /// 收起播放器详情页（向下滑出，稍快一点收尾）
+    func closePlayerDetail() {
+        withAnimation(.spring(response: 0.38, dampingFraction: 0.90)) {
+            activePage = 0
+        }
+    }
     /// 当前歌曲大图封面（播放器页展示）
     @Published private(set) var currentArtwork: NSImage?
     /// 播放器页背景色（由当前封面主色派生，深浅模式自动切换；nil = 默认材质）

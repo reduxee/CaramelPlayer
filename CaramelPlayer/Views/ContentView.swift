@@ -108,17 +108,20 @@ struct ContentView: View {
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
+            // 展开播放器时，底下的列表轻微缩小，形成「播放页盖上来」的层次感
+            .scaleEffect(player.activePage == 1 ? 0.985 : 1)
 
             // ---------- 播放器模式：全窗覆盖层 ----------
             if player.activePage == 1 {
-                PlayerDetailView(onCollapse: {
-                    withAnimation(.easeInOut(duration: 0.3)) { player.activePage = 0 }
-                })
-                .transition(.opacity.combined(with: .scale(scale: 1.03)))
-                .zIndex(10)
+                PlayerDetailView(onCollapse: { player.closePlayerDetail() })
+                    // 从窗口底部滑入 / 向下滑出，配合淡入淡出
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .bottom).combined(with: .opacity),
+                        removal: .move(edge: .bottom).combined(with: .opacity)
+                    ))
+                    .zIndex(10)
             }
         }
-        .animation(.easeInOut(duration: 0.25), value: player.activePage)
         .animation(.easeInOut(duration: 0.18), value: showSettings || showSearch)
         // 释放 SwiftUI 自动塞给搜索框的焦点，否则空格会被当成文字输入
         .releaseAutoTextFocus()

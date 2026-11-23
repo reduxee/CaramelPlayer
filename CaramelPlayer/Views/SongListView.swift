@@ -207,13 +207,16 @@ struct SongListView: View {
                 .foregroundStyle(Theme.caramel)
                 .frame(width: 34, height: 34)
                 .background(
-                    Circle()
+                    RoundedRectangle(cornerRadius: 9)
                         .fill(.regularMaterial)
-                        .overlay(Circle().strokeBorder(Color.primary.opacity(0.10)))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 9)
+                                .strokeBorder(Color.primary.opacity(0.10))
+                        )
                         .shadow(color: .black.opacity(0.16), radius: 6, y: 2)
                 )
-                .hoverHighlight(cornerRadius: 17)
-                .contentShape(Circle())
+                .hoverHighlight(cornerRadius: 9)
+                .contentShape(RoundedRectangle(cornerRadius: 9))
         }
         .buttonStyle(.plain)
         .help("定位到正在播放的歌曲")

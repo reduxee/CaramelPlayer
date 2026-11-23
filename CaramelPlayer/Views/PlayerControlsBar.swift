@@ -114,7 +114,7 @@ struct PlayerControlsBar: View {
                 ArtworkThumb(song: song, isPlayingIndicator: false, size: 44)
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        withAnimation { player.activePage = 1 }
+                        player.showPlayerDetail()
                     }
                     .help("查看播放详情")
             } else {
@@ -140,7 +140,7 @@ struct PlayerControlsBar: View {
             .frame(width: 190, alignment: .leading)
             .contentShape(Rectangle())
             .onTapGesture {
-                withAnimation { player.activePage = 1 }
+                player.showPlayerDetail()
             }
         }
         .help("点击进入播放器页")

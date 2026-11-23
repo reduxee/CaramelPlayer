@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 
 /// 焦糖音乐 App 入口
 ///
