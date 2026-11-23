@@ -147,3 +147,11 @@ CaramelPlayer/
 - 不做云音乐、登录、在线搜索、广告、推荐——**只做本地播放器**；
 - 音频全部走 AVFoundation 系统框架，无第三方音视频 SDK；
 - UI 全部 SwiftUI，无 WebView / 无移动端移植样式。
+
+## 八、许可证
+
+本项目基于 [MIT License](LICENSE) 开源 —— 可自由使用、修改、分发，保留版权声明即可。
+
+```
+MIT © 2026 Yee Qee
+```
