@@ -21,8 +21,13 @@ struct SongListView: View {
     @State private var showCreatePlaylist = false
     @State private var newPlaylistName = ""
 
-    /// 当前分区的歌曲
-    private var sectionSongs: [Song] {
+    /// 当前分区按「拼音/英文首字母」排序后的歌曲（显示与播放队列共用同一顺序）
+    @State private var sortedSongs: [Song] = []
+    /// 字母分组索引（每个字母的第一首歌，右侧索引条跳转用）
+    @State private var letterGroups: [(letter: String, firstID: UUID)] = []
+
+    /// 当前分区的原始歌曲
+    private var rawSongs: [Song] {
         player.songs(in: section)
     }
 
@@ -41,13 +46,18 @@ struct SongListView: View {
             toolbar
             Divider()
                 .opacity(0.5)
-            if sectionSongs.isEmpty {
+            if rawSongs.isEmpty {
                 emptyState
             } else {
                 songTable
             }
         }
         .background(Theme.pageBackground)
+        // 曲库 / 歌单 / 分区变化时重建排序结果（带缓存，不会随渲染重复计算）
+        .onAppear { rebuildIndex() }
+        .onChange(of: section) { _ in rebuildIndex() }
+        .onChange(of: player.songs) { _ in rebuildIndex() }
+        .onChange(of: player.playlists) { _ in rebuildIndex() }
         .alert("新建歌单", isPresented: $showCreatePlaylist) {
             TextField("歌单名称", text: $newPlaylistName)
             Button("创建") {
@@ -73,7 +83,7 @@ struct SongListView: View {
                     .controlSize(.small)
                     .help("正在扫描并读取音频信息…")
             }
-            Text("共 \(sectionSongs.count) 首")
+            Text("共 \(rawSongs.count) 首")
                 .font(.callout)
                 .foregroundStyle(Theme.secondary)
 
@@ -117,36 +127,55 @@ struct SongListView: View {
 
     // MARK: - 歌曲列表
 
+    /// 列表主体：可滚动（显示滚动条）+ 右下角定位按钮 + 右侧字母索引
     private var songTable: some View {
         ScrollViewReader { proxy in
-            ScrollView(showsIndicators: false) {
-                LazyVStack(spacing: 0) {
-                    // 列头（歌曲名 / 歌手 / 专辑 / 时长）
-                    headerRow
-                        .padding(.horizontal, 16)
+            HStack(spacing: 0) {
+                ZStack(alignment: .bottomTrailing) {
+                    ScrollView(showsIndicators: true) {
+                        LazyVStack(spacing: 0) {
+                            // 列头（歌曲名 / 歌手 / 专辑 / 时长）
+                            headerRow
+                                .padding(.horizontal, 16)
 
-                    ForEach(sectionSongs) { song in
-                        SongRow(song: song,
-                                isCurrent: player.currentSong?.id == song.id,
-                                isPlaying: player.isPlaying,
-                                section: section)
-                            .id(song.id)
-                            // 双击行（任意位置）→ 在当前列表的队列内播放
-                            .onTapGesture(count: 2) {
-                                player.play(song, from: player.songs(in: section))
-                            }
-                            .onAppear {
-                                // 列表自动滚动跟随正在播放的曲目
-                                if player.currentSong?.id == song.id {
-                                    withAnimation(.easeInOut(duration: 0.3)) {
-                                        proxy.scrollTo(song.id, anchor: .center)
+                            ForEach(sortedSongs) { song in
+                                SongRow(song: song,
+                                        isCurrent: player.currentSong?.id == song.id,
+                                        isPlaying: player.isPlaying,
+                                        section: section,
+                                        queue: sortedSongs)
+                                    .id(song.id)
+                                    // 双击行（任意位置）→ 在当前列表的队列内播放
+                                    .onTapGesture(count: 2) {
+                                        player.play(song, from: sortedSongs)
                                     }
-                                }
                             }
+                        }
+                        .padding(.vertical, 4)
+                        .padding(.bottom, 40)
+                    }
+
+                    // 右下角：定位到当前播放歌曲（歌曲较多时才有意义）
+                    if player.currentSong != nil, sortedSongs.count > 8 {
+                        locateButton(proxy)
+                            .padding(.trailing, 14)
+                            .padding(.bottom, 14)
                     }
                 }
-                .padding(.vertical, 4)
-                .padding(.bottom, 12)
+
+                // 右侧字母索引（只有 2 个及以上分组时才显示）
+                if letterGroups.count > 1 {
+                    letterIndexBar(proxy: proxy)
+                }
+            }
+            // 进入页面（含重启 App 后恢复）→ 直接把列表定位到当前选中的歌曲
+            .onAppear {
+                guard let id = player.currentSong?.id else { return }
+                DispatchQueue.main.async { proxy.scrollTo(id, anchor: .center) }
+                // LazyVStack 首帧可能还没完成布局，稍后再补一次（无动画，避免看到跳动）
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    proxy.scrollTo(id, anchor: .center)
+                }
             }
             // 切歌时滚动跟随
             .onChange(of: player.currentSong?.id) { newID in
@@ -156,6 +185,62 @@ struct SongListView: View {
                 }
             }
         }
+    }
+
+    /// 重建排序结果与字母分组（曲库 / 歌单变化时调用；纯计算 + 缓存，不随渲染重复跑）
+    private func rebuildIndex() {
+        let sorted = SongSorter.sorted(rawSongs)
+        sortedSongs = sorted
+        letterGroups = SongSorter.groups(of: sorted)
+    }
+
+    /// 右下角「定位到当前歌曲」按钮
+    private func locateButton(_ proxy: ScrollViewProxy) -> some View {
+        Button {
+            guard let id = player.currentSong?.id else { return }
+            withAnimation(.easeInOut(duration: 0.3)) {
+                proxy.scrollTo(id, anchor: .center)
+            }
+        } label: {
+            Image(systemName: "scope")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(Theme.caramel)
+                .frame(width: 34, height: 34)
+                .background(
+                    Circle()
+                        .fill(.regularMaterial)
+                        .overlay(Circle().strokeBorder(Color.primary.opacity(0.10)))
+                        .shadow(color: .black.opacity(0.16), radius: 6, y: 2)
+                )
+                .hoverHighlight(cornerRadius: 17)
+                .contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .help("定位到正在播放的歌曲")
+    }
+
+    /// 右侧字母索引条：点击跳到该字母的第一首歌
+    private func letterIndexBar(proxy: ScrollViewProxy) -> some View {
+        VStack(spacing: 1) {
+            ForEach(letterGroups, id: \.letter) { group in
+                Button {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        proxy.scrollTo(group.firstID, anchor: .top)
+                    }
+                } label: {
+                    Text(group.letter)
+                        .font(.system(size: 9, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Theme.secondary)
+                        .frame(width: 15, height: 13)
+                        .hoverHighlight(cornerRadius: 4)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .help("跳到 \(group.letter) 开头的第一首")
+            }
+        }
+        .padding(.trailing, 3)
+        .padding(.vertical, 8)
     }
 
     private var headerRow: some View {
@@ -230,6 +315,9 @@ struct SongRow: View {
     let isCurrent: Bool
     let isPlaying: Bool
     let section: ListSection
+    /// 当前列表（已按首字母排序）的播放队列：点封面小三角时按这个顺序续播；
+    /// 不传时退回该分区的默认顺序（搜索页等场景）
+    var queue: [Song]? = nil
 
     @ObservedObject private var player = PlayerManager.shared
     @State private var isHovering = false
@@ -245,7 +333,7 @@ struct SongRow: View {
                         if isCurrent {
                             player.togglePlayPause()
                         } else {
-                            player.play(song, from: player.songs(in: section))
+                            player.play(song, from: queue ?? player.songs(in: section))
                         }
                     } label: {
                         ZStack {

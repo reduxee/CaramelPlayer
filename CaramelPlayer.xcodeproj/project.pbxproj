@@ -24,6 +24,7 @@
 		A100000000000000000000012 /* Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000012 /* Shortcuts.swift */; };
 		A100000000000000000000013 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000013 /* SettingsView.swift */; };
 		A100000000000000000000014 /* SearchPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000014 /* SearchPageView.swift */; };
+		A100000000000000000000015 /* SongSorter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000015 /* SongSorter.swift */; };
 		A100000000000000000000011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B100000000000000000000011 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,8 @@
 		B100000000000000000000012 /* Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts.swift; sourceTree = "<group>"; };
 		B100000000000000000000013 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B100000000000000000000014 /* SearchPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageView.swift; sourceTree = "<group>"; };
+		B100000000000000000000015 /* SongSorter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongSorter.swift; sourceTree = "<group>"; };
+		B100000000000000000000015 /* SongSorter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongSorter.swift; sourceTree = "<group>"; };
 		B100000000000000000000010 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B100000000000000000000011 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C100000000000000000000001 /* CaramelPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaramelPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				B100000000000000000000002 /* Song.swift */,
+				B100000000000000000000015 /* SongSorter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -247,6 +251,7 @@
 				A10000000000000000000000F /* PlayerControlsBar.swift in Sources */,
 				A100000000000000000000013 /* SettingsView.swift in Sources */,
 				A100000000000000000000014 /* SearchPageView.swift in Sources */,
+				A100000000000000000000015 /* SongSorter.swift in Sources */,
 				A100000000000000000000012 /* Shortcuts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
