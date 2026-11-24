@@ -224,7 +224,7 @@ struct ContentView: View {
             ZStack {
                 Text("\(player.songs.count) 首歌曲")
                     .font(.caption)
-                    .foregroundStyle(Theme.secondary)
+                    .foregroundStyle(Theme.secondary.opacity(0.65))   // 比菜单文字更淡一点
 
                 HStack(spacing: 0) {
                     settingsButton

@@ -1,5 +1,4 @@
 import SwiftUI
-import AppKit
 
 /// 焦糖音乐 App 入口
 ///
@@ -15,7 +14,6 @@ struct CaramelPlayerApp: App {
         // 挂载应用内快捷键（空格播放/暂停、⌘←/⌘→ 切歌…，可在设置页自定义）
         // 仅在本 App 窗口处于前台时生效，不注册系统全局热键
         ShortcutStore.shared.startMonitoring()
-
     }
 
     var body: some Scene {

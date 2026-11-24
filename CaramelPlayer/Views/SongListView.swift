@@ -23,12 +23,23 @@ struct SongListView: View {
 
     /// 当前分区按「拼音/英文首字母」排序后的歌曲（显示与播放队列共用同一顺序）
     @State private var sortedSongs: [Song] = []
+    /// sortedSongs / letterGroups 是按哪个分区算出来的（用于判断是否需要兜底重算）
+    @State private var builtSection: ListSection?
     /// 字母分组索引（每个字母的第一首歌，右侧索引条跳转用）
     @State private var letterGroups: [(letter: String, firstID: UUID)] = []
 
     /// 当前分区的原始歌曲
     private var rawSongs: [Song] {
         player.songs(in: section)
+    }
+
+    /// 始终与当前分区一致的显示数据
+    ///
+    /// `onChange` 闭包里捕获的是上一次渲染的 `self`，此时 `self.section` 可能还是旧分区，
+    /// 直接在里面 rebuild 会把上一个分区的歌算出来（表现为「菜单切了、右边内容慢一拍」）。
+    /// 这里用 `builtSection` 做守卫：数据与当前分区不一致时就同步补算一次。
+    private var displaySongs: [Song] {
+        builtSection == section ? sortedSongs : SongSorter.sorted(rawSongs)
     }
 
     /// 分区标题
@@ -54,10 +65,11 @@ struct SongListView: View {
         }
         .background(Theme.pageBackground)
         // 曲库 / 歌单 / 分区变化时重建排序结果（带缓存，不会随渲染重复计算）
-        .onAppear { rebuildIndex() }
-        .onChange(of: section) { _ in rebuildIndex() }
-        .onChange(of: player.songs) { _ in rebuildIndex() }
-        .onChange(of: player.playlists) { _ in rebuildIndex() }
+        .onAppear { rebuildIndex(for: section) }
+        // 注意：必须用闭包给的 newValue，不能用 self.section（此时还是旧值）
+        .onChange(of: section) { newValue in rebuildIndex(for: newValue) }
+        .onChange(of: player.songs) { _ in rebuildIndex(for: builtSection ?? section) }
+        .onChange(of: player.playlists) { _ in rebuildIndex(for: builtSection ?? section) }
         .alert("新建歌单", isPresented: $showCreatePlaylist) {
             TextField("歌单名称", text: $newPlaylistName)
             Button("创建") {
@@ -129,7 +141,10 @@ struct SongListView: View {
 
     /// 列表主体：可滚动（显示滚动条）+ 右下角定位按钮 + 右侧字母索引
     private var songTable: some View {
-        ScrollViewReader { proxy in
+        let songs = displaySongs
+        let groups = builtSection == section ? letterGroups : SongSorter.groups(of: songs)
+
+        return ScrollViewReader { proxy in
             HStack(spacing: 0) {
                 ZStack(alignment: .bottomTrailing) {
                     ScrollView(showsIndicators: true) {
@@ -138,16 +153,16 @@ struct SongListView: View {
                             headerRow
                                 .padding(.horizontal, 16)
 
-                            ForEach(sortedSongs) { song in
+                            ForEach(songs) { song in
                                 SongRow(song: song,
                                         isCurrent: player.currentSong?.id == song.id,
                                         isPlaying: player.isPlaying,
                                         section: section,
-                                        queue: sortedSongs)
+                                        queue: songs)
                                     .id(song.id)
                                     // 双击行（任意位置）→ 在当前列表的队列内播放
                                     .onTapGesture(count: 2) {
-                                        player.play(song, from: sortedSongs)
+                                        player.play(song, from: songs)
                                     }
                             }
                         }
@@ -156,7 +171,7 @@ struct SongListView: View {
                     }
 
                     // 右下角：定位到当前播放歌曲（歌曲较多时才有意义）
-                    if player.currentSong != nil, sortedSongs.count > 8 {
+                    if player.currentSong != nil, songs.count > 8 {
                         locateButton(proxy)
                             .opacity(0.88)
                             .padding(.trailing, 26)
@@ -165,8 +180,8 @@ struct SongListView: View {
                 }
 
                 // 右侧字母索引（只有 2 个及以上分组时才显示）
-                if letterGroups.count > 1 {
-                    letterIndexBar(proxy: proxy)
+                if groups.count > 1 {
+                    letterIndexBar(groups: groups, proxy: proxy)
                 }
             }
             // 进入页面（含重启 App 后恢复）→ 直接把列表定位到当前选中的歌曲
@@ -178,21 +193,17 @@ struct SongListView: View {
                     proxy.scrollTo(id, anchor: .center)
                 }
             }
-            // 切歌时滚动跟随
-            .onChange(of: player.currentSong?.id) { newID in
-                guard let newID else { return }
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    proxy.scrollTo(newID, anchor: .center)
-                }
-            }
+            // 说明：切歌时**不**自动滚动。双击/点三角播放都发生在当前页，
+            // 再把列表拽到那首歌反而突兀；需要时点右下角定位按钮。
         }
     }
 
-    /// 重建排序结果与字母分组（曲库 / 歌单变化时调用；纯计算 + 缓存，不随渲染重复跑）
-    private func rebuildIndex() {
-        let sorted = SongSorter.sorted(rawSongs)
+    /// 重建排序结果与字母分组（纯计算 + 首字母缓存，不随渲染重复跑）
+    private func rebuildIndex(for target: ListSection) {
+        let sorted = SongSorter.sorted(player.songs(in: target))
         sortedSongs = sorted
         letterGroups = SongSorter.groups(of: sorted)
+        builtSection = target
     }
 
     /// 右下角「定位到当前歌曲」按钮
@@ -224,9 +235,10 @@ struct SongListView: View {
     }
 
     /// 右侧字母索引条：点击跳到该字母的第一首歌
-    private func letterIndexBar(proxy: ScrollViewProxy) -> some View {
+    private func letterIndexBar(groups: [(letter: String, firstID: UUID)],
+                                proxy: ScrollViewProxy) -> some View {
         VStack(spacing: 1) {
-            ForEach(letterGroups, id: \.letter) { group in
+            ForEach(groups, id: \.letter) { group in
                 Button {
                     withAnimation(.easeInOut(duration: 0.25)) {
                         proxy.scrollTo(group.firstID, anchor: .top)
