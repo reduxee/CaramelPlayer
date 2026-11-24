@@ -102,23 +102,18 @@ struct ContentView: View {
                 }
                 .ignoresSafeArea(edges: .top)
 
-                // 迷你控制条：仅列表页显示；上沿自带 2pt 歌曲进度条
-                if player.activePage == 0 {
-                    PlayerControlsBar()
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
+                // 迷你控制条常驻（播放器页会整块盖住它）：
+                // 若跟随 activePage 插入/移除，列表可用高度会变化 74pt，
+                // 展开播放器时列表会「跳一下」，同时多出一棵子树的动画开销
+                PlayerControlsBar()
             }
-            // 展开播放器时，底下的列表轻微缩小，形成「播放页盖上来」的层次感
-            .scaleEffect(player.activePage == 1 ? 0.985 : 1)
+
 
             // ---------- 播放器模式：全窗覆盖层 ----------
             if player.activePage == 1 {
                 PlayerDetailView(onCollapse: { player.closePlayerDetail() })
-                    // 从窗口底部滑入 / 向下滑出，配合淡入淡出
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .bottom).combined(with: .opacity),
-                        removal: .move(edge: .bottom).combined(with: .opacity)
-                    ))
+                    // 仅从窗口底部滑入 / 向下滑出（位移动画走 transform，最省）
+                    .transition(.move(edge: .bottom))
                     .zIndex(10)
             }
         }

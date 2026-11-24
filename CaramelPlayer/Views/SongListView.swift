@@ -158,7 +158,8 @@ struct SongListView: View {
                     // 右下角：定位到当前播放歌曲（歌曲较多时才有意义）
                     if player.currentSong != nil, sortedSongs.count > 8 {
                         locateButton(proxy)
-                            .padding(.trailing, 14)
+                            .opacity(0.88)
+                            .padding(.trailing, 26)
                             .padding(.bottom, 14)
                     }
                 }
