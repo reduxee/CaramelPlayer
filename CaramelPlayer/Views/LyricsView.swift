@@ -62,10 +62,12 @@ struct LyricsView: View {
                 ], startPoint: .top, endPoint: .bottom)
             )
             // 歌词跟随播放进度：当前行变化 → 平滑滚动让它居中
+            // 用 spring 而不是 easeInOut：弹簧动画可中断续接，连续换行时位移不会
+            // 每次都「静止→加速→减速→静止」，手感连续得多（easeInOut 会显得一顿一顿）
             .onChange(of: player.activeLyricIndex) { index in
                 guard let index, index < player.currentLyrics.lines.count else { return }
                 let id = player.currentLyrics.lines[index].id
-                withAnimation(.easeInOut(duration: 0.45)) {
+                withAnimation(.spring(response: 0.45, dampingFraction: 1.0)) {
                     proxy.scrollTo(id, anchor: .center)
                 }
             }
@@ -115,7 +117,7 @@ struct LyricsView: View {
     }
 }
 
-/// 单行歌词：当前行加粗高亮；悬浮显示背景色；点击 seek 到该行时间
+/// 单行歌词：常规态 19pt 半透明 / 高亮态 21pt 加粗纯色；悬浮显示背景色；点击 seek 到该行时间
 private struct LyricRowView: View {
 
     let line: LyricLine
@@ -126,25 +128,41 @@ private struct LyricRowView: View {
 
     var body: some View {
         let text = line.text.isEmpty ? "♪" : line.text
-        return Text(text)
-            .font(.system(size: isActive ? 21 : 19, weight: isActive ? .bold : .regular))
-            .foregroundStyle(isActive ? Color.primary : Color.primary.opacity(0.35))
-            .multilineTextAlignment(.center)
-            .frame(maxWidth: 460)
-            .padding(.horizontal, 18)
-            .padding(.vertical, 6)
-            .background(
-                // 悬浮背景色（与按钮一致的半透明白色；当前行不重复加背景，保持高亮主导）
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(isHovering && !isActive ? Theme.hoverFill : Color.clear)
-            )
-            .scaleEffect(isActive ? 1.03 : 1.0)
-            // 注意：不放 blur——blur 在高亮切换时整行重新栅格化，会加重闪烁感
-            .animation(.easeInOut(duration: 0.3), value: isActive)
-            .animation(.easeOut(duration: 0.12), value: isHovering)
-            .contentShape(Rectangle())
-            .onHover { hovering in isHovering = hovering }
-            .onTapGesture(perform: onTap)
-            .help("点击跳转到这句歌词")
+        // 【闪烁修复】两层文字叠放，而不是改同一层 Text 的 font。
+        //
+        // SwiftUI 的 font 无法插值：只要高亮切换被动画包住（行内 .animation，或滚动 scrollTo 的
+        // withAnimation 形成的事务都算），就会退化成「两个字号版本交叉淡化」——
+        // 两版文字宽度不同、居中错位，表现为行首文字缺失（如「混音：…」只剩「：…」）、
+        // 整行先消失 0.x 秒再出现。
+        //
+        // 现在两层文字的字号是**固定常量**（19pt / 21pt），isActive 只驱动 opacity，
+        // 而 opacity 可以安全插值 → 高亮切换能做成柔和过渡，且永远不会让 font 参与动画。
+        // 两层同时参与布局，行高恒等于 21pt 版本，切换不触发任何重排。
+        return ZStack {
+            Text(text)
+                .font(.system(size: 19))
+                .foregroundStyle(Color.primary.opacity(0.35))
+                .opacity(isActive ? 0 : 1)
+            Text(text)
+                .font(.system(size: 21, weight: .bold))
+                .foregroundStyle(Color.primary)
+                .opacity(isActive ? 1 : 0)
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: 460)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 6)
+        .background(
+            // 悬浮背景色（与按钮一致的半透明白色；当前行不重复加背景，保持高亮主导）
+            RoundedRectangle(cornerRadius: 8)
+                .fill(isHovering && !isActive ? Theme.hoverFill : Color.clear)
+        )
+        .contentShape(Rectangle())
+        .onHover { hovering in isHovering = hovering }
+        .onTapGesture(perform: onTap)
+        .help("点击跳转到这句歌词")
+        // 高亮切换的柔和过渡：只作用于 opacity（字号是常量，不会被插值，
+        // 所以不会再出现交叉淡化导致的缺字/消失）
+        .animation(.easeInOut(duration: 0.2), value: isActive)
     }
 }
